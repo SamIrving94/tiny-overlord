@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en-GB" data-theme="day">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>The Tiny Overlord</title>
+  <meta name="description" content="Feeds, nappies, sleep and medicine for two tired parents.">
+  <meta name="theme-color" content="#FAF6F0" id="theme-color">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    // Pick day or night before anything draws, so there is never a white flash at night
+    (function () {
+      try {
+        var s = JSON.parse(localStorage.getItem('tto.settings') || '{}');
+        var h = Number(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', hour: '2-digit', hourCycle: 'h23' }).format(new Date()));
+        var t = s.theme === 'day' || s.theme === 'night' ? s.theme : (h >= 19 || h < 7 ? 'night' : 'day');
+        document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <div class="top-title" id="top-title">The Tiny Overlord</div>
+      <button class="sync" id="sync" data-action="go" data-view="settings" aria-live="polite"></button>
+    </header>
+
+    <main id="view" tabindex="-1"></main>
+
+    <nav class="tabs" id="tabs" aria-label="Screens">
+      <button data-action="go" data-view="now"><span class="ico" data-icon="home"></span><span>Now</span></button>
+      <button data-action="go" data-view="today"><span class="ico" data-icon="list"></span><span>Today</span></button>
+      <button data-action="go" data-view="week"><span class="ico" data-icon="week"></span><span>Week</span></button>
+      <button data-action="go" data-view="settings"><span class="ico" data-icon="gear"></span><span>Settings</span></button>
+    </nav>
+  </div>
+
+  <div class="sheet-backdrop" id="sheet-backdrop" hidden></div>
+  <section class="sheet" id="sheet" role="dialog" aria-modal="true" hidden></section>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <!-- Filled in just before printing the health visitor summary -->
+  <article id="print"></article>
+
+  <script src="derive.js"></script>
+  <script src="store.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
