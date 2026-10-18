@@ -16,6 +16,16 @@ Run the tests (state logic only):
 npm test
 ```
 
+## Where it lives
+
+Published at **https://samirving94.github.io/tiny-overlord/** from the public repo [SamIrving94/tiny-overlord](https://github.com/SamIrving94/tiny-overlord), which holds only this folder. After committing changes in the main project, publish them with:
+
+```bash
+npm run publish-app
+```
+
+The app checks for new files each time it opens, so phones pick up changes within a minute or two.
+
 ## What it does
 
 - **Now**: one main card answers "which side, and when was the last feed?", with one big button to start the feed. Below it are three rows: Nappy, Sleep and Medicine, each with a status line and a clearly worded button.
