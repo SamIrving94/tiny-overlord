@@ -1,0 +1,10 @@
+{
+  "name": "secure-application-form",
+  "private": true,
+  "description": "Insurance application form where each section is locked with its own password",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": { "node": ">=20" }
+}
