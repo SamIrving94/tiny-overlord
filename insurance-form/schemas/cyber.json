@@ -1,0 +1,136 @@
+{
+  "id": "cyber",
+  "version": "1.0.0",
+  "title": "Cyber insurance application",
+  "countries": [
+    { "code": "GB", "name": "United Kingdom", "region": "europe", "currency": "GBP" },
+    { "code": "IE", "name": "Ireland", "region": "europe", "currency": "EUR" },
+    { "code": "DE", "name": "Germany", "region": "europe", "currency": "EUR" },
+    { "code": "FR", "name": "France", "region": "europe", "currency": "EUR" },
+    { "code": "US", "name": "United States", "region": "north-america", "currency": "USD" },
+    { "code": "CA", "name": "Canada", "region": "north-america", "currency": "CAD" },
+    { "code": "AU", "name": "Australia", "region": "apac", "currency": "AUD" },
+    { "code": "SG", "name": "Singapore", "region": "apac", "currency": "SGD" }
+  ],
+  "industries": [
+    { "code": "financial", "name": "Financial services" },
+    { "code": "healthcare", "name": "Healthcare" },
+    { "code": "retail", "name": "Retail and e-commerce" },
+    { "code": "manufacturing", "name": "Manufacturing" },
+    { "code": "technology", "name": "Technology" },
+    { "code": "professional", "name": "Professional services" },
+    { "code": "education", "name": "Education" },
+    { "code": "public", "name": "Public sector" }
+  ],
+  "sections": [
+    {
+      "id": "company",
+      "title": "About the company",
+      "audience": "Client admin",
+      "description": "Basic details about the business applying for cover.",
+      "questions": [
+        { "id": "legal_name", "label": "Legal name of the company", "type": "text", "required": true },
+        { "id": "address", "label": "Registered address", "type": "textarea", "required": true },
+        { "id": "website", "label": "Main website", "type": "text", "help": "For example: example.com" },
+        { "id": "year_founded", "label": "Year the company was set up", "type": "number", "min": 1800, "max": 2100 },
+        { "id": "has_subsidiaries", "label": "Should subsidiaries be covered too?", "type": "yesno", "required": true },
+        { "id": "subsidiaries", "label": "List the subsidiaries and their countries", "type": "textarea", "showIf": { "answer": { "question": "has_subsidiaries", "equals": "yes" } } },
+        { "id": "us_entity", "label": "Name of the US company, if different", "type": "text", "showIf": { "country": ["US"] } }
+      ]
+    },
+    {
+      "id": "exposure",
+      "title": "Exposure and revenues",
+      "audience": "Finance",
+      "description": "Money and size figures. These set the price of the policy.",
+      "questions": [
+        { "id": "revenue_total", "label": "Total revenue in the last full financial year", "type": "currency", "required": true },
+        { "id": "revenue_next", "label": "Expected revenue this financial year", "type": "currency", "required": true },
+        { "id": "revenue_online", "label": "Share of revenue made online", "type": "percent", "required": true },
+        { "id": "revenue_us", "label": "Share of revenue from US customers", "type": "percent", "required": true, "help": "US revenue changes the price because US claims cost more." },
+        { "id": "employees", "label": "Number of employees", "type": "number", "required": true, "min": 0 },
+        { "id": "records_pii", "label": "Roughly how many personal records do you hold?", "type": "select", "required": true, "options": ["Under 10,000", "10,000 to 100,000", "100,000 to 1 million", "1 million to 10 million", "Over 10 million"] },
+        { "id": "records_phi", "label": "How many patient health records do you hold?", "type": "number", "min": 0, "showIf": { "industry": ["healthcare"] } },
+        { "id": "card_transactions", "label": "Card payments taken each year", "type": "select", "options": ["None", "Under 20,000", "20,000 to 1 million", "1 million to 6 million", "Over 6 million"], "showIf": { "industry": ["retail", "professional", "technology"] } },
+        { "id": "aum", "label": "Assets under management", "type": "currency", "showIf": { "industry": ["financial"] } }
+      ]
+    },
+    {
+      "id": "infosec",
+      "title": "Information security",
+      "audience": "InfoSec / IT",
+      "description": "How systems are protected. Best answered by the security or IT lead.",
+      "questions": [
+        { "id": "mfa_email", "label": "Is multi-factor login (MFA) required for email?", "type": "yesno", "required": true },
+        { "id": "mfa_remote", "label": "Is MFA required for all remote access (VPN, remote desktop)?", "type": "yesno", "required": true },
+        { "id": "mfa_admin", "label": "Is MFA required for admin and privileged accounts?", "type": "yesno", "required": true },
+        { "id": "edr", "label": "Do you run endpoint detection and response (EDR) on all devices?", "type": "yesno", "required": true },
+        { "id": "edr_product", "label": "Which EDR product?", "type": "text", "showIf": { "answer": { "question": "edr", "equals": "yes" } } },
+        { "id": "backups_offline", "label": "Are backups kept offline or unchangeable (immutable)?", "type": "yesno", "required": true },
+        { "id": "backup_tested", "label": "When were backups last test-restored?", "type": "select", "required": true, "options": ["In the last 3 months", "3 to 12 months ago", "Over a year ago", "Never"] },
+        { "id": "patching", "label": "How quickly are critical security patches applied?", "type": "select", "required": true, "options": ["Within 7 days", "Within 30 days", "Within 90 days", "Longer, or no set target"] },
+        { "id": "end_of_life", "label": "Do you run any software that no longer gets security updates?", "type": "yesno", "required": true },
+        { "id": "end_of_life_detail", "label": "Which software, and how is it protected?", "type": "textarea", "showIf": { "answer": { "question": "end_of_life", "equals": "yes" } } },
+        { "id": "training", "label": "Do staff get phishing training at least once a year?", "type": "yesno", "required": true },
+        { "id": "ir_plan", "label": "Do you have a tested incident response plan?", "type": "yesno", "required": true },
+        { "id": "ot_segmented", "label": "Are factory or operational systems (OT) kept apart from the office network?", "type": "yesno", "required": true, "showIf": { "industry": ["manufacturing"] } },
+        { "id": "swift", "label": "Do you use SWIFT or other payment networks?", "type": "yesno", "showIf": { "industry": ["financial"] } },
+        { "id": "security_lead", "label": "Name and job title of the security lead", "type": "text", "required": true }
+      ]
+    },
+    {
+      "id": "privacy",
+      "title": "Privacy and data rules",
+      "audience": "Legal / Data protection",
+      "description": "How personal data is handled, and which privacy laws apply.",
+      "questions": [
+        { "id": "dpo", "label": "Do you have a data protection officer?", "type": "yesno", "required": true },
+        { "id": "data_types", "label": "Which kinds of data do you hold?", "type": "multiselect", "required": true, "options": ["Customer contact details", "Payment card data", "Bank details", "Health data", "Biometric data", "Children's data", "Employee data"] },
+        { "id": "gdpr", "label": "Have you done a GDPR review in the last 2 years?", "type": "yesno", "required": true, "showIf": { "region": ["europe"] } },
+        { "id": "ccpa", "label": "Do you follow the California privacy law (CCPA / CPRA)?", "type": "yesno", "showIf": { "country": ["US"] } },
+        { "id": "hipaa", "label": "Are you HIPAA compliant?", "type": "yesno", "required": true, "showIf": { "country": ["US"], "industry": ["healthcare"] } },
+        { "id": "pci", "label": "Are you PCI DSS compliant?", "type": "yesno", "showIf": { "industry": ["retail"] } },
+        { "id": "privacy_notice", "label": "Link to your privacy notice", "type": "text" }
+      ]
+    },
+    {
+      "id": "claims",
+      "title": "Claims and incidents",
+      "audience": "Risk / Legal",
+      "description": "Past events in the last 5 years.",
+      "questions": [
+        { "id": "had_incident", "label": "In the last 5 years, have you had a cyber attack, data breach or system outage that cost money?", "type": "yesno", "required": true },
+        { "id": "incident_detail", "label": "What happened, what did it cost, and what has changed since?", "type": "textarea", "required": true, "showIf": { "answer": { "question": "had_incident", "equals": "yes" } } },
+        { "id": "regulator", "label": "Has a regulator ever investigated how you handle data?", "type": "yesno", "required": true },
+        { "id": "aware_of_circumstance", "label": "Do you know of anything that could lead to a claim?", "type": "yesno", "required": true }
+      ]
+    },
+    {
+      "id": "analytics",
+      "title": "Risk and analytics data",
+      "audience": "InfoSec / IT",
+      "description": "Extra detail for risk modelling and exposure analytics. Only asked if the client agreed to share it.",
+      "showIf": { "analytics": true },
+      "questions": [
+        { "id": "domains", "label": "All internet domains you own", "type": "textarea", "required": true, "help": "One per line. Used for an outside-in security scan." },
+        { "id": "ip_ranges", "label": "Public IP address ranges", "type": "textarea", "help": "One per line, for example 203.0.113.0/24" },
+        { "id": "cloud", "label": "Main cloud providers", "type": "multiselect", "options": ["AWS", "Microsoft Azure", "Google Cloud", "Oracle Cloud", "Other", "None"] },
+        { "id": "critical_vendors", "label": "Technology suppliers you could not trade without", "type": "textarea", "help": "For example: payroll, payments, ERP, hosting." },
+        { "id": "revenue_per_day_it", "label": "Revenue lost per day if your main systems were down", "type": "currency" },
+        { "id": "rto_hours", "label": "Target hours to get main systems back after an outage", "type": "number", "min": 0 }
+      ]
+    },
+    {
+      "id": "declaration",
+      "title": "Declaration",
+      "audience": "Client admin",
+      "description": "Someone senior must confirm the answers are true.",
+      "questions": [
+        { "id": "signer_name", "label": "Full name", "type": "text", "required": true },
+        { "id": "signer_title", "label": "Job title", "type": "text", "required": true },
+        { "id": "confirm", "label": "I confirm that, as far as I know, all answers in this application are true and complete.", "type": "checkbox", "required": true },
+        { "id": "signed_on", "label": "Date", "type": "date", "required": true }
+      ]
+    }
+  ]
+}
